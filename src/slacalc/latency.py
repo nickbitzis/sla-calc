@@ -5,9 +5,9 @@ from __future__ import annotations
 import csv
 import math
 import re
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Sequence
 
 STANDARD_PERCENTILES = (50, 90, 95, 99, 99.9)
 
@@ -34,9 +34,9 @@ class LatencySlo:
     threshold_ms: float
 
     @classmethod
-    def parse(cls, text: str) -> "LatencySlo":
+    def parse(cls, text: str) -> LatencySlo:
         """Parse 'p99<=300', 'p99=300ms', or 'p99.9 < 1s'."""
-        m = re.fullmatch(r"\s*p(\d+(?:\.\d+)?)\s*(?:<=|<|=)\s*(\d+(?:\.\d+)?)\s*(ms|s)?\s*", text, re.I)
+        m = re.fullmatch(r"\s*p(\d+(?:\.\d+)?)\s*(?:<=|<|=)\s*(\d+(?:\.\d+)?)\s*(ms|s)?\s*", text, re.IGNORECASE)
         if not m:
             raise ValueError(f"Can't read latency SLO {text!r}. Use a form like p99<=300ms.")
         threshold = float(m.group(2)) * (1000 if (m.group(3) or "ms").lower() == "s" else 1)

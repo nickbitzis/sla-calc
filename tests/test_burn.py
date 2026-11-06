@@ -22,14 +22,14 @@ def test_no_errors_means_no_exhaustion():
 @pytest.mark.parametrize(
     "kwargs",
     [
-        dict(target=0.999, good=1, total=0),
-        dict(target=0.999, good=11, total=10),
-        dict(target=1.0, good=1, total=1),
-        dict(target=0.999, good=1, total=1, window_seconds=0),
+        {"target": 0.999, "good": 1, "total": 0},
+        {"target": 0.999, "good": 11, "total": 10},
+        {"target": 1.0, "good": 1, "total": 1},
+        {"target": 0.999, "good": 1, "total": 1, "window_seconds": 0},
     ],
 )
 def test_burn_validates_inputs(kwargs):
-    base = dict(window_seconds=3600, period_seconds=30 * DAY)
+    base = {"window_seconds": 3600, "period_seconds": 30 * DAY}
     with pytest.raises(ValueError):
         burn(**{**base, **kwargs})
 
